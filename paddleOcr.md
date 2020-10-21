@@ -36,7 +36,7 @@
    pip3 install -r requirments.txt
    ```
 
-   *4.**若git clone速度过慢**
+   *4.**若git clone速度过慢，解决方法是修改hosts文件**
 
    ​		1.Hosts文件地址
 
@@ -95,3 +95,42 @@
    ```
    ipconfig /flushdns
    ```
+
+## 2.中文OCR模型快速使用
+
+​	**1.inference模型下载**
+
+<img src="..\img\inference.png" alt="img" style="zoom: 50%;" />
+
+​		以超轻量级模型为例：
+
+```
+mkdir inference && cd inference
+# 下载超轻量级中文OCR模型的检测模型并解压
+wget https://paddleocr.bj.bcebos.com/20-09-22/mobile/det/ch_ppocr_mobile_v1.1_det_infer.tar && tar xf ch_ppocr_mobile_v1.1_det_infer.tar
+# 下载超轻量级中文OCR模型的识别模型并解压
+wget https://paddleocr.bj.bcebos.com/20-09-22/mobile/rec/ch_ppocr_mobile_v1.1_rec_infer.tar && tar xf ch_ppocr_mobile_v1.1_rec_infer.tar
+# 下载超轻量级中文OCR模型的文本方向分类器模型并解压
+wget https://paddleocr.bj.bcebos.com/20-09-22/cls/ch_ppocr_mobile_v1.1_cls_infer.tar && tar xf ch_ppocr_mobile_v1.1_cls_infer.tar
+cd ..
+```
+
+​		若没有安装wget，则[点击进入网站](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/doc/doc_ch/quickstart.md)，直接进行下载，并解压放置在相应目录下
+
+复制上表中的检测和识别的`inference模型`下载地址，并解压。
+
+​		解压完毕后应有如下文件结构：
+
+```
+|-inference
+    |-ch_ppocr_mobile_v1.1_det_infer
+        |- model
+        |- params
+    |-ch_ppocr_mobile_v1.1_rec_infer
+        |- model
+        |- params
+    |-ch_ppocr_mobile-v1.1_cls_infer
+        |- model
+        |- params
+    ...
+```
