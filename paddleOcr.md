@@ -100,7 +100,7 @@
 
 ​	**1.inference模型下载**
 
-<img src="..\img\inference.png" alt="img" style="zoom: 50%;" />
+<img src=".\img\inference.png" alt="img" style="zoom: 50%;" />
 
 ​		以超轻量级模型为例：
 
@@ -134,3 +134,45 @@ cd ..
         |- params
     ...
 ```
+
+​	**2.单张图像或者图像集合预测**
+
+​		以下代码实现了文本检测、识别串联推理，在执行预测时，需要通过参数image_dir指定单张图像或者图像集合的路径、参数`det_model_dir`指定检测inference模型的路径、参数`rec_model_dir`指定识别inference模型的路径、参数`use_angle_cls`指定是否使用方向分类器、参数`cls_model_dir`指定方向分类器inference模型的路径、参数`use_space_char`指定是否预测空格字符。可视化识别结果默认保存到`./inference_results`文件夹里面。
+
+```
+# 预测image_dir指定的单张图像
+python tools/infer/predict_system.py --image_dir=./doc/imgs/11.jpg --det_model_dir=./inference/ch_ppocr_mobile_v1.1_det_infer/  --rec_model_dir=./inference/ch_ppocr_mobile_v1.1_rec_infer/ --cls_model_dir=./inference/ch_ppocr_mobile_v1.1_cls_infer/ --use_angle_cls=True --use_space_char=True
+
+# 预测image_dir指定的图像集合
+python tools/infer/predict_system.py --image_dir="./doc/imgs/" --det_model_dir="./inference/ch_ppocr_mobile_v1.1_det_infer/"  --rec_model_dir="./inference/ch_ppocr_mobile_v1.1_rec_infer/" --cls_model_dir="./inference/ch_ppocr_mobile_v1.1_cls_infer/" --use_angle_cls=True --use_space_char=True
+
+# 如果想使用CPU进行预测，需设置use_gpu参数为False
+python tools/infer/predict_system.py --image_dir=./doc/imgs/11.jpg --det_model_dir=./inference/ch_ppocr_mobile_v1.1_det_infer/  --rec_model_dir=./inference/ch_ppocr_mobile_v1.1_rec_infer/ --cls_model_dir=./inference/ch_ppocr_mobile_v1.1_cls_infer/ --use_angle_cls=True --use_space_char=True --use_gpu=False
+```
+
+​		**踩坑实录：**
+
+​	    官方文档上面的代码是python3 tools/infer/predict_system.py，但是我的机子上在cmd输入上面的命令没有用，只有输入将python3改成python才有用。
+
+​		举个简单例子，我写了一个main.py，里面就print('Hi,PyCharm')。
+
+![bug1.1](.\img\bug1.1.png)
+
+![bug1.2](.\img\bug1.2.png)
+
+- 通用中文OCR模型
+
+请按照上述步骤下载相应的模型，并且更新相关的参数，示例如下：
+
+```
+# 预测image_dir指定的单张图像
+python3 tools/infer/predict_system.py --image_dir="./doc/imgs/11.jpg" --det_model_dir="./inference/ch_ppocr_server_v1.1_det_infer/"  --rec_model_dir="./inference/ch_ppocr_server_v1.1_rec_infer/" --cls_model_dir="./inference/ch_ppocr_mobile_v1.1_cls_infer/" --use_angle_cls=True --use_space_char=True
+```
+
+- 注意：
+  - 如果希望使用不支持空格的识别模型，在预测的时候需要注意：请将代码更新到最新版本，并添加参数 `--use_space_char=False`。
+  - 如果不希望使用方向分类器，在预测的时候需要注意：请将代码更新到最新版本，并添加参数 `--use_angle_cls=False`。
+
+## 3.运行成果(用CUP进行预测)
+
+![bug1.1](.\inference_results\11.jpg)
