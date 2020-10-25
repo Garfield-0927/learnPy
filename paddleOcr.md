@@ -176,3 +176,66 @@ python3 tools/infer/predict_system.py --image_dir="./doc/imgs/11.jpg" --det_mode
 ## 3.运行成果(用CUP进行预测)
 
 ![bug1.1](.\inference_results\11.jpg)
+
+
+
+## 4. GPU预测环境配置
+
+​			**参考教程：https://blog.csdn.net/weixin_45494025/article/details/100746025**
+
+- 需要确认您的 Windows 7/8/10 是 64 位操作系统*
+- 需要您具有*支持 CUDA 的 nVidia 显卡*，且正确安装 [CUDA 10](https://docs.nvidia.com/cuda/archive/10.0/index.html)
+  注意：Windows 仅支持 CUDA 9.0/10.0 的单卡模式；不支持 CUDA 9.1/9.2/10.1
+- 需要使用 [cuDNN 7.6+](https://docs.nvidia.com/deeplearning/sdk/cudnn-install/#install-windows)
+- Windows 暂不支持 NCCL
+- 确认您需要安装PaddlePaddle 的 python版本是3.5.1+/3.6+/3.7+，*因为您计算机可能有多个python*
+
+```
+python --version
+```
+
+- 如果python版本不是3.5.1+/3.6+/3.7+，请您确认python的路径是否是您预期的位置
+
+```
+where python
+```
+
+- 其中python 3.5.1+/3.6+/3.7+的安装目录应位于第一行，如果不是，您可以通过以下任意方法调整：
+  - 将所有命令行中的 `python`替换为 `python3`的安装路径（例如C:\Python36\python.exe)
+  - 在环境变量中，将 `python3`的安装路径设置在第一顺序位（请在控制面板->系统属性->环境变量->PATH中修改)
+- 如果python版本是3.5.1+/3.6+/3.7+，请确认 Python 有对应的 pip，检查 Python 对应的 pip 的版本，确认是 9.0.1+：
+
+```
+python -m ensurepip
+python -m pip --version
+```
+
+- 确认 Python 和 pip 是 64 bit，并且处理器架构是x86_64（或称作 x64、Intel 64、AMD64）架构，目前PaddlePaddle不支持arm64架构
+  下面的第一行输出的是 "64bit"，第二行输出的是 "x86_64"、"x64" 或 "AMD64" 即可：
+
+```
+python -c "import platform;print(platform.architecture()[0]);print(platform.machine())"
+```
+
+- 执行以下命令安装（推荐使用百度源）：
+
+```
+python -m pip install paddlepaddle-gpu==1.8.5.post107 -i https://mirror.baidu.com/pypi/simple
+```
+
+或
+
+```
+python -m pip install paddlepaddle-gpu==1.8.5.post107 -i https://pypi.tuna.tsinghua.edu.cn/simple
+```
+
+验证信息
+
+使用 `python` 进入python解释器，输入`import paddle.fluid` ，再输入 `paddle.fluid.install_check.run_check()`。
+如果出现 `Your Paddle Fluid is installed successfully!`，说明您已成功安装。
+
+说明信息
+
+更多帮助信息请参考 [Windows 下 pip 安装](https://www.paddlepaddle.org.cn/documentation/docs/zh/1.8/install/install_Windows.html#windows)。
+*同时要求处理器支持 MKL；并且架构是x86_64，PaddlePaddle不支持arm64架构
+
